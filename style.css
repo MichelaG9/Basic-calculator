@@ -92,7 +92,7 @@ td{
     font-size: 1em;
 } 
 
-.number:active{
+.number:active, #decimal:active{
     background-color: #E8B74B;
 }
 

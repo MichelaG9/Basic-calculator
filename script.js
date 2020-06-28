@@ -1,38 +1,30 @@
 var num = document.getElementById("result").innerText = 0;
+var numbers = document.querySelectorAll('.number');
+var operators = document.querySelectorAll('.operator');
+var operdecimal = document.querySelector("#decimal");
+var opequal = document.querySelector(".equal");
+var buttbackspace = document.querySelector("#backspace");
+var buttclear = document.querySelector("#clear");
 
-function getHistory(){
-    return document.getElementById("history").innerText;
-}
+var result;
+var temp = 0;
+
+//Print History and Output
 function printHistory(num){
     document.getElementById("history").innerText=num;
 }
 
-function getOutput(){
-    return document.getElementById("result").innerText;
-}
 function printOutput(num){
-    if(num==""){
-        document.getElementById("result").innerText = num;
-    }
-    else{
-    document.getElementById("result").innerText=num;
-    }
+    document.getElementById("result").innerText= formatNumber(num);
 }
+
 function formatNumber(num){
     var n = Number(num);
-    var value = n.toLocaleString("en");
+    var value = n.toLocaleString("en", {maximumFractionDigits:10});
     return value;
 }
 
-var opequal = document.querySelector("#equal");
-var operatorperc = document.querySelector("#percentage").innerText;
-var buttbackspace = document.querySelector("#backspace");
-var buttclear = document.querySelector("#clear");
-var operdecimal = document.querySelector("#decimal");
-
-
-var temp = 0;
-var numbers = document.querySelectorAll('.number');
+//Numbers
 for(let i = 0; i < numbers.length; i++){
     numbers[i].addEventListener('click', function (){
         if(temp.toString().includes('=')){
@@ -50,11 +42,14 @@ for(let i = 0; i < numbers.length; i++){
     })
 }
 
-
-var operators = document.querySelectorAll('.operator');
+//Operators
 for(let i = 0; i < operators.length; i++){
     operators[i].addEventListener('click', function(){
-        if(temp == '0'){
+        if(temp.toString().includes('=')){
+            temp = result + ' ' + operators[i].innerText;
+            printHistory(temp);
+        }
+        else if(temp == '0'){
             temp = num + ' ' + operators[i].innerText;
         }
         else{
@@ -66,6 +61,7 @@ for(let i = 0; i < operators.length; i++){
     })
 }
 
+//Decimals
 operdecimal.addEventListener('click', function(){
     if(!num.includes('.')){
         num = num + '.';
@@ -73,7 +69,7 @@ operdecimal.addEventListener('click', function(){
     printOutput(num);
 })
 
-var result;
+//Result
 opequal.addEventListener('click', function (){
     temp = temp + ' ' + num;
     result = eval(temp);
@@ -83,6 +79,7 @@ opequal.addEventListener('click', function (){
     num = result;
 })
 
+//Backspace and clear buttons
 buttbackspace.addEventListener('click', function(){
     if(num.length == '1')
         num = 0;
@@ -100,3 +97,18 @@ buttclear.addEventListener('click', function(){
     printOutput(num);
 })
 
+//Keyboard commands (only numbers)
+window.addEventListener('keydown', function(e){
+    if(temp.toString().includes('=')){
+        num = document.querySelector("button[data-key ='"+ e.keyCode +"']").innerText;
+        temp = '0';
+        printHistory(' '); //reset the history after an operation
+    }
+    else if(num == '0'){
+        num = document.querySelector("button[data-key ='"+ e.keyCode +"']").innerText;
+    }
+    else{
+        num = num + document.querySelector("button[data-key ='"+ e.keyCode +"']").innerText;
+    }
+    printOutput(num);
+});
