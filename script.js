@@ -15,7 +15,7 @@ function printOutput(num){
         document.getElementById("result").innerText = num;
     }
     else{
-    document.getElementById("result").innerText=formatNumber(num);
+    document.getElementById("result").innerText=num;
     }
 }
 function formatNumber(num){
@@ -28,6 +28,7 @@ var opequal = document.querySelector("#equal");
 var operatorperc = document.querySelector("#percentage").innerText;
 var buttbackspace = document.querySelector("#backspace");
 var buttclear = document.querySelector("#clear");
+var operdecimal = document.querySelector("#decimal");
 
 
 var temp = 0;
@@ -65,6 +66,13 @@ for(let i = 0; i < operators.length; i++){
     })
 }
 
+operdecimal.addEventListener('click', function(){
+    if(!num.includes('.')){
+        num = num + '.';
+    }
+    printOutput(num);
+})
+
 var result;
 opequal.addEventListener('click', function (){
     temp = temp + ' ' + num;
@@ -76,7 +84,19 @@ opequal.addEventListener('click', function (){
 })
 
 buttbackspace.addEventListener('click', function(){
-    num = num.toString().splice((num.length - 1), 1);
+    if(num.length == '1')
+        num = 0;
+    else
+        num = num.slice(0, num.length - 1);
+
+    printOutput(num);
+})
+
+buttclear.addEventListener('click', function(){
+    temp = 0;
+    num = 0;
+
+    printHistory(' ');
     printOutput(num);
 })
 
