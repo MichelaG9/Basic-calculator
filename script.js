@@ -81,7 +81,8 @@ opequal.addEventListener('click', function (){
 
 //Backspace and clear buttons
 buttbackspace.addEventListener('click', function(){
-    if(num.length == '1')
+    if(num == 0) return;
+    else if(num.length == '1')
         num = 0;
     else
         num = num.slice(0, num.length - 1);
@@ -99,7 +100,8 @@ buttclear.addEventListener('click', function(){
 
 //Keyboard commands (only numbers)
 window.addEventListener('keydown', function(e){
-    if(temp.toString().includes('=')){
+    if(!document.querySelector("button[data-key ='"+ e.keyCode +"']")) return;
+    else if(temp.toString().includes('=')){
         num = document.querySelector("button[data-key ='"+ e.keyCode +"']").innerText;
         temp = '0';
         printHistory(' '); //reset the history after an operation
@@ -112,3 +114,14 @@ window.addEventListener('keydown', function(e){
     }
     printOutput(num);
 });
+
+window.addEventListener('keydown', function(e){
+    if(e.keyCode == 8){
+        if(num == 0) return;
+        else if(num.length == '1')
+        num = 0;
+        else
+        num = num.slice(0, num.length - 1);
+    }
+    printOutput(num);
+})
