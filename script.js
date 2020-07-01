@@ -5,7 +5,8 @@ var operdecimal = document.querySelector("#decimal");
 var opequal = document.querySelector(".equal");
 var buttbackspace = document.querySelector("#backspace");
 var buttclear = document.querySelector("#clear");
-
+var oppercentage = document.querySelector("#percentage");
+var percent = 0;
 var result;
 var temp = 0;
 
@@ -67,6 +68,23 @@ operdecimal.addEventListener('click', function(){
         num = num + '.';
     }
     printOutput(num);
+})
+
+//Percentage
+oppercentage.addEventListener('click', function(){
+    var tempOperator = temp.split('').pop();
+    var befPerc = temp.toString().slice(0, temp.length - 2);
+    if(tempOperator == '+' || tempOperator == '-'){
+    percent = (parseFloat(num) / 100) * parseFloat(eval(befPerc));
+    result = befPerc + ' ' + tempOperator + ' ' + percent;
+    }
+    else if(tempOperator == '*' || tempOperator == '/'){
+        percent = parseFloat(num) / 100;
+        result = temp + ' ' + percent;
+    }
+    printHistory(result);
+    printOutput(percent);
+    num = percent;
 })
 
 //Result
